@@ -224,6 +224,16 @@ section {
   color: var(--mainColor);
 }
 
+.icon-container {
+  text-align: center;
+}
+
+.departement-icon {
+  max-width: 100px;
+  max-height: 100px;
+  margin: 0px 3px;
+}
+
 /* MenuVoice 3 */
 
 #menuvoice3 {
@@ -345,5 +355,10 @@ footer {
 
   #menuvoice1 {
     padding: 30px 0px 10px 0px;
+  }
+
+  .departement-icon {
+    max-width: 50px;
+    max-height: 50px;
   }
 }
