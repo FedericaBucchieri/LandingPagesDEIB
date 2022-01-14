@@ -26,6 +26,12 @@
       crossorigin="anonymous"
     ></script>
   </head>
+  <style>
+    :root {
+      --mainColor: #5b7e99;
+    }
+  </style>
+
   <body
     id="#landingPage"
     data-spy="scroll"
@@ -37,11 +43,16 @@
       <h1>Electrical Engineering</h1>
     </div>
 
-    <nav class="navbar navbar-expand-lg sticky" id="navbar">
+    <nav class="navbar navbar-expand-xl sticky" id="navbar">
       <div class="container">
-        <a class="navbar-brand" href="#">
-          <img src="images/DEIBLogo.png" alt="DEIB logo" />
-        </a>
+        <div class="navbar-brand">
+          <a href="https://www.polimi.it/">
+            <img src="images/PoliLogo.png" alt="Politecnico di Milano logo" />
+          </a>
+          <a href="https://www.deib.polimi.it/ita/home">
+            <img src="images/DEIBLogo.png" alt="DEIB logo" />
+          </a>
+        </div>
         <button
           class="navbar-toggler"
           type="button"
@@ -57,14 +68,28 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link" aria-current="page" href="#menuvoice1"
+            <a
+              class="nav-link"
+              aria-current="page"
+              href="#menuvoice1"
+              onclick="toggleMenuStatus()"
               >People</a
             >
-            <a class="nav-link" href="#menuvoice2">Research</a>
-            <a class="nav-link" href="#menuvoice3">Laboratories</a>
-            <a class="nav-link" href="#menuvoice4">Teaching</a>
-            <a class="nav-link" href="#menuvoice5">PhD</a>
-            <a class="nav-link" href="#menuvoice6">News</a>
+            <a class="nav-link" href="#menuvoice2" onclick="toggleMenuStatus()"
+              >Research & projects</a
+            >
+            <a class="nav-link" href="#menuvoice3" onclick="toggleMenuStatus()"
+              >Laboratories</a
+            >
+            <a class="nav-link" href="#menuvoice4" onclick="toggleMenuStatus()"
+              >Teaching</a
+            >
+            <a class="nav-link" href="#menuvoice5" onclick="toggleMenuStatus()"
+              >PhD</a
+            >
+            <a class="nav-link" href="#menuvoice6" onclick="toggleMenuStatus()"
+              >News</a
+            >
           </div>
         </div>
       </div>
@@ -240,4 +265,101 @@
 
     <footer></footer>
   </body>
+
+  <script>
+    (function (document, history, location) {
+      var HISTORY_SUPPORT = !!(history && history.pushState);
+
+      var anchorScrolls = {
+        ANCHOR_REGEX: /^#[^ ]+$/,
+        OFFSET_HEIGHT_PX: 120,
+
+        /**
+         * Establish events, and fix initial scroll position if a hash is provided.
+         */
+        init: function () {
+          this.scrollToCurrent();
+          window.addEventListener(
+            "hashchange",
+            this.scrollToCurrent.bind(this)
+          );
+          document.body.addEventListener(
+            "click",
+            this.delegateAnchors.bind(this)
+          );
+        },
+
+        /**
+         * Return the offset amount to deduct from the normal scroll position.
+         * Modify as appropriate to allow for dynamic calculations
+         */
+        getFixedOffset: function () {
+          return this.OFFSET_HEIGHT_PX;
+        },
+
+        /**
+         * If the provided href is an anchor which resolves to an element on the
+         * page, scroll to it.
+         * @param  {String} href
+         * @return {Boolean} - Was the href an anchor.
+         */
+        scrollIfAnchor: function (href, pushToHistory) {
+          var match, rect, anchorOffset;
+
+          if (!this.ANCHOR_REGEX.test(href)) {
+            return false;
+          }
+
+          match = document.getElementById(href.slice(1));
+
+          if (match) {
+            rect = match.getBoundingClientRect();
+            anchorOffset =
+              window.pageYOffset + rect.top - this.getFixedOffset();
+            window.scrollTo(window.pageXOffset, anchorOffset);
+
+            // Add the state to history as-per normal anchor links
+            if (HISTORY_SUPPORT && pushToHistory) {
+              history.pushState({}, document.title, location.pathname + href);
+            }
+          }
+
+          return !!match;
+        },
+
+        /**
+         * Attempt to scroll to the current location's hash.
+         */
+        scrollToCurrent: function () {
+          this.scrollIfAnchor(window.location.hash);
+        },
+
+        /**
+         * If the click event's target was an anchor, fix the scroll position.
+         */
+        delegateAnchors: function (e) {
+          var elem = e.target;
+
+          if (
+            elem.nodeName === "A" &&
+            this.scrollIfAnchor(elem.getAttribute("href"), true)
+          ) {
+            e.preventDefault();
+          }
+        },
+      };
+
+      window.addEventListener(
+        "DOMContentLoaded",
+        anchorScrolls.init.bind(anchorScrolls)
+      );
+    })(window.document, window.history, window.location);
+  </script>
+
+  <script>
+    function toggleMenuStatus() {
+      var menu = document.getElementById("navbarNavAltMarkup");
+      menu.classList.toggle("show");
+    }
+  </script>
 </html>
